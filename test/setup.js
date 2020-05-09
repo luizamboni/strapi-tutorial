@@ -1,32 +1,23 @@
 const strapi = require('strapi')();
 
 
-/*
-* create a proxy for strapi.start()
-* that prevent open in browser and other 
-* annoying  behaviours as undesirable console outputs
-*/
-const start = new Proxy(strapi.start, {
-  
-  apply: async (target, thisArgs, argumentList) => {
-    const [ cb ] = argumentList;
-
-    try {
-      await thisArgs.load();
-      await thisArgs.freeze();
+const start = async function(cb) {
+  try {
+    await this.load();
+    await this.freeze();
 
 
-      if (cb && typeof cb === 'function') {
-        cb();
-      }
-    } catch (err) {
-      thisArgs.stopWithError(err);
+    if (cb && typeof cb === 'function') {
+      cb();
     }
+  } catch (err) {
+      this.stopWithError(err);
   }
-})
+}
 
 
 strapi.start = start;
+start.bind(strapi)
 
 before((done) => {
 
