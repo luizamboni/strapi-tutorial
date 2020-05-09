@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "connection": "default",
+  "collectionName": "page_contents",
+  "info": {
+    "name": "PageContent"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "startAt": {
+      "type": "datetime"
+    },
+    "endAt": {
+      "type": "datetime"
+    },
+    "elements": {
+      "type": "dynamiczone",
+      "components": [
+        "element.links-set",
+        "element.offers-set"
+      ]
+    }
+  }
+}
